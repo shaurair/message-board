@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board</title>
+</head>
+<body>
+    <h3>發表一篇圖文</h3>
+    <form action="/board", method="POST", enctype="multipart/form-data">
+        <label>文字內容</label>
+        <input type="text" name="messageText" />
+        <br/><br/>
+        <label>圖片檔案</label>
+        <input type="file" name="messageImage" />
+        <br/><br/>
+        <button type="submit">送出</button>
+    </form>
+    <hr/>
+</body>
+</html>
