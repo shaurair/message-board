@@ -1,5 +1,6 @@
 const express = require('express')
 const multer = require('multer')
+const path = require('path')
 const router = express.Router()
 
 router.use(express.static('public'))
@@ -11,7 +12,7 @@ const imageStorage = multer.diskStorage({
         cb(null, 'images/');
     },
     filename: function(req, file, cb) {
-        cb(null, file.originalname)
+        cb(null, Date.now() + path.extname(file.originalname))
     }
 })
 
