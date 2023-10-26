@@ -7,15 +7,81 @@
 </head>
 <body>
     <h3>發表一篇圖文</h3>
-    <form action="/board", method="POST", enctype="multipart/form-data">
+    <form id="message-form" enctype="multipart/form-data">
         <label>文字內容</label>
-        <input type="text" name="messageText" />
+        <input type="text" name="messageText" id="message-text"/>
         <br/><br/>
         <label>圖片檔案</label>
-        <input type="file" name="messageImage" />
+        <input type="file" name="messageImage" id="message-image" />
         <br/><br/>
-        <button type="submit">送出</button>
+        <button type="submit" id="submit-btn" style="cursor: pointer;">送出</button>
+        <h3 id="wait" style="color: blue; display: none;">上傳中，請耐心等候！！！</h3>
     </form>
     <hr/>
+    <div id="message-container"></div>
+    <script>
+        let isAllowMessageSubmit = true;
+        const submitBtn = document.getElementById("submit-btn");
+        const waitElement = document.getElementById("wait");
+        const messageFormElement = document.getElementById("message-form");
+        const textElement = document.getElementById("message-text");
+        const imageElement = document.getElementById("message-image");
+
+        messageFormElement.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            if(isAllowMessageSubmit == false) {
+                return;
+            }
+
+            if(textElement.value === "" && imageElement.value === "") {
+                alert("至少需留言或上傳圖片");
+            } else {
+                isAllowMessageSubmit = false;
+                submitBtn.style.cursor = "not-allowed";
+                waitElement.style.display = "block";
+
+                sendMessageForm();
+            }
+        });
+
+        async function sendMessageForm() {
+            const formData = new FormData();
+            formData.append("messageText", textElement.value);
+            formData.append("messageImage", imageElement.files[0]);
+
+            let response = await fetch("/api/board", { method: "POST", body: formData });
+            if(!response.ok) {
+                    alert("伺服器錯誤，請重新整理再試一次，頁面將自動跳轉")
+             }
+
+            location.reload();
+        }
+
+        async function initAllMessage() {
+            let response = await fetch("/api/board");
+            let result = await response.json();
+            const messageContainerElement = document.getElementById("message-container");
+            const urlCDN = "https://d2o8k69neolkqv.cloudfront.net/";
+            let element;
+
+            for(let messageIndex = 0; messageIndex < result.length; messageIndex++) {
+                element = document.createElement('div');
+                element.textContent = result[messageIndex]["text"];
+                messageContainerElement.appendChild(element);
+
+                if(result[messageIndex]["image_filename"] != null) {
+                    element = document.createElement('img');
+                    element.src = urlCDN + result[messageIndex]["image_filename"];
+                    messageContainerElement.appendChild(element);
+                }
+
+                element = document.createElement('hr');
+                messageContainerElement.appendChild(element);
+            }
+        }
+
+        initAllMessage();
+    </script>
 </body>
 </html>
