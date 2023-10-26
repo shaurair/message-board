@@ -6,7 +6,8 @@
     "express": "^4.18.2",
     "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
-    "sharp": "^0.32.6"
+    "sharp": "^0.32.6",
+    "util": "^0.12.5"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
