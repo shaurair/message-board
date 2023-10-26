@@ -5,6 +5,7 @@
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1",
     "sharp": "^0.32.6"
   },
   "devDependencies": {
@@ -12,5 +13,12 @@
   },
   "scripts": {
     "devStart": "nodemon server.js"
-  }
+  },
+  "name": "message-board",
+  "version": "1.0.0",
+  "main": "app.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
