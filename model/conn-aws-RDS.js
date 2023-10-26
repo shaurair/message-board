@@ -42,7 +42,7 @@ async function addMessagesToDB(text, imageFilename) {
     catch(error) {
         let errorMessage = {};
         errorMessage["error"] = true;
-        errorMessage["message"] = "資料庫操作有誤";
+        errorMessage["message"] = "資料庫操作有誤，請重新整理再試一次";
 
         return {data: errorMessage, statusCode: 500}
     }

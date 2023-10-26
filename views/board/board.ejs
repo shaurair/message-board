@@ -35,7 +35,7 @@
             }
 
             if(textElement.value === "" && imageElement.value === "") {
-                alert("至少需留言或上傳圖片");
+                alert("至少需留言文字或上傳圖片");
             } else {
                 isAllowMessageSubmit = false;
                 submitBtn.style.cursor = "not-allowed";
@@ -52,10 +52,15 @@
 
             let response = await fetch("/api/board", { method: "POST", body: formData });
             if(!response.ok) {
-                    alert("伺服器錯誤，請重新整理再試一次，頁面將自動跳轉")
-             }
-
-            location.reload();
+                let result = await response.json();
+                alert(result["message"])
+                isAllowMessageSubmit = true;
+                submitBtn.style.cursor = "pointer";
+                waitElement.style.display = "none";
+            }
+            else {
+                location.reload();
+            }
         }
 
         async function initAllMessage() {
