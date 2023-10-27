@@ -21,7 +21,13 @@ router.post('/', upload.single('messageImage'), async (req, res) => {
         const fileMimeType = req.file.mimetype;
 
         if(fileMimeType === 'image/jpeg' || fileMimeType === 'image/png') {
-            const imageResized = await sharp(req.file.buffer).resize({ height: 200, fit: 'contain' }).toBuffer();
+            let imageResized = req.file.buffer;
+            const image = sharp(imageResized);
+            const imageMetadata = await image.metadata();
+
+            if(imageMetadata.height > 200) {
+                imageResized = await image.resize({ height: 200, fit: 'contain' }).toBuffer();
+            }
             imageFilename = `${Date.now()}-${req.file.originalname}`;
     
             result = await connAwsS3.uploadToS3(imageResized, imageFilename, fileMimeType);
